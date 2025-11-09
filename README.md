@@ -14,7 +14,6 @@ A real-time collaborative drawing application where multiple users can draw simu
 1. Click the demo link above
 2. Start drawing immediately
 3. Open another tab/window to see real-time collaboration
-4. See [TESTING.md](TESTING.md) for comprehensive testing instructions
 
 ### Option 2: Run Locally
 
@@ -200,40 +199,6 @@ PING/PONG: { type: 'ping' } / { type: 'pong' }
 
 Full protocol documentation: [ARCHITECTURE.md](ARCHITECTURE.md)
 
-## 🚀 Deployment
-
-### Quick Deploy to Railway (Recommended)
-1. Fork this repository
-2. Sign up at [railway.app](https://railway.app/)
-3. Click "New Project" → "Deploy from GitHub"
-4. Select your forked repo
-5. Deploy! (takes ~2 minutes)
-
-**Full deployment guide**: See [DEPLOYMENT.md](DEPLOYMENT.md) for Railway, Render, and Heroku instructions.
-
-### Environment Variables
-```bash
-PORT=8080  # Auto-set by most platforms
-```
-
-No other configuration needed! The app auto-detects:
-- WebSocket protocol (ws:// or wss://)
-- Port from environment
-- DPI scaling
-
-## 🧪 Testing
-
-**For evaluators**: See comprehensive testing guide in [TESTING.md](TESTING.md)
-
-**Quick test scenarios**:
-1. ✅ Single user drawing (2 min)
-2. ✅ Multi-user collaboration (3 min)
-3. ✅ Color picker features (2 min)
-4. ✅ Mobile responsive (2 min)
-5. ✅ Browser compatibility (5 min)
-
-**Total testing time**: ~15 minutes
-
 ## 🎯 Performance
 
 **Metrics** (typical):
@@ -259,89 +224,5 @@ No other configuration needed! The app auto-detects:
 5. **Conflict Resolution**: Simultaneous edits may appear slightly out of order
 
 For detailed architecture analysis: [ARCHITECTURE.md](ARCHITECTURE.md)
-
-## 🔒 Security
-
-**Current Status** (Demo/Educational):
-- ❌ No authentication
-- ✅ Basic input validation
-- ✅ XSS-safe (canvas operations only)
-- ❌ No rate limiting
-- ❌ No CSRF protection
-
-**For Production**, add:
-- User authentication (JWT/OAuth)
-- Rate limiting on WebSocket messages
-- Input sanitization
-- HTTPS/WSS only
-- Room access controls
-
-## 📝 Submission Checklist
-
-For assignment evaluation:
-
-- ✅ **GitHub Repository**: [github.com/Hari-Krishnan-N/FLAM](https://github.com/Hari-Krishnan-N/FLAM)
-- ✅ **Live Demo**: [Demo link here](#) ← *Will be deployed*
-- ✅ **Testing Guide**: [TESTING.md](TESTING.md)
-- ✅ **Deployment Guide**: [DEPLOYMENT.md](DEPLOYMENT.md)
-- ✅ **Architecture Docs**: [ARCHITECTURE.md](ARCHITECTURE.md)
-- ✅ **Browser Compatible**: Chrome, Firefox, Safari, Edge
-- ✅ **Mobile Responsive**: Touch-enabled UI
-- ✅ **No Setup Required**: Works immediately via demo link
-
-## 🆘 Troubleshooting
-
-### Server won't start
-```bash
-# Check if port is in use
-lsof -i :8080  # macOS/Linux
-netstat -ano | findstr :8080  # Windows
-
-# Try different port
-PORT=3000 npm start
-```
-
-### WebSocket connection fails
-1. Check server is running
-2. Verify `ws://localhost:8080` (or `wss://` for HTTPS)
-3. Check browser console for errors
-4. Clear browser cache
-5. Try different browser
-
-### Drawings not syncing
-1. Verify "Connected" status in top-right
-2. Check WebSocket connection in DevTools → Network
-3. Refresh both windows
-4. Check server logs for errors
-
-### Performance issues
-1. Check FPS counter (should be 50-60)
-2. Reduce stroke width
-3. Clear canvas (too many operations)
-4. Check network latency (footer shows ping)
-5. Close other tabs/applications
-
-## 📞 Support & Contact
-
-- **GitHub Issues**: [github.com/Hari-Krishnan-N/FLAM/issues](https://github.com/Hari-Krishnan-N/FLAM/issues)
-- **Testing Instructions**: [TESTING.md](TESTING.md)
-- **Deployment Help**: [DEPLOYMENT.md](DEPLOYMENT.md)
-- **Architecture Details**: [ARCHITECTURE.md](ARCHITECTURE.md)
-
-## 📄 License
-
-This project is provided as-is for educational purposes.
-
-## 🙏 Acknowledgments
-
-Built with:
-- HTML5 Canvas API
-- WebSocket protocol
-- Express.js & ws library
-- Vanilla JavaScript (no frameworks!)
-
----
-
-**⭐ Ready to collaborate? Open the [demo](#) and start drawing!**
 
 *This is a demonstration of real-time collaborative drawing with vanilla JavaScript and WebSockets. For production use, consider adding persistence, authentication, and scaling optimizations.*
