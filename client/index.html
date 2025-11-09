@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collaborative Drawing Canvas</title>
+
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- SVG Icon Definitions -->
+    <svg style="display: none;" aria-hidden="true">
+        <defs>
+            <!-- Brush/Pencil Icon -->
+            <symbol id="icon-brush" viewBox="0 0 24 24">
+                <path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/>
+            </symbol>
+
+            <!-- Eraser Icon -->
+            <symbol id="icon-eraser" viewBox="0 0 24 24">
+                <path d="M16.24 3.56l4.95 4.94c.78.79.78 2.05 0 2.84L12 20.53a4.008 4.008 0 0 1-5.66 0L2.81 17c-.78-.79-.78-2.05 0-2.84l10.6-10.6c.79-.78 2.05-.78 2.83 0M4.22 15.58l3.54 3.53c.78.79 2.04.79 2.83 0l3.53-3.53l-4.95-4.95l-4.95 4.95z"/>
+            </symbol>
+
+            <!-- Trash/Clear Icon -->
+            <symbol id="icon-trash" viewBox="0 0 24 24">
+                <path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/>
+            </symbol>
+
+            <!-- Undo Icon -->
+            <symbol id="icon-undo" viewBox="0 0 24 24">
+                <path d="M12.5 8c-2.65 0-5.05.99-6.9 2.6L2 7v9h9l-3.62-3.62c1.39-1.16 3.16-1.88 5.12-1.88 3.54 0 6.55 2.31 7.6 5.5l2.37-.78C21.08 11.03 17.15 8 12.5 8z"/>
+            </symbol>
+
+            <!-- Redo Icon -->
+            <symbol id="icon-redo" viewBox="0 0 24 24">
+                <path d="M18.4 10.6C16.55 8.99 14.15 8 11.5 8c-4.65 0-8.58 3.03-9.96 7.22L3.9 16c1.05-3.19 4.05-5.5 7.6-5.5 1.95 0 3.73.72 5.12 1.88L13 16h9V7l-3.6 3.6z"/>
+            </symbol>
+
+            <!-- Download Icon -->
+            <symbol id="icon-download" viewBox="0 0 24 24">
+                <path d="M19 12v7H5v-7H3v7c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-7h-2zm-6 .67l2.59-2.58L17 11.5l-5 5-5-5 1.41-1.41L11 12.67V3h2z"/>
+            </symbol>
+
+            <!-- Copy Icon -->
+            <symbol id="icon-copy" viewBox="0 0 24 24">
+                <path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>
+            </symbol>
+
+            <!-- Eyedropper Icon -->
+            <symbol id="icon-eyedropper" viewBox="0 0 24 24">
+                <path d="M20.71 5.63l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-3.12 3.12-1.93-1.91-1.41 1.41 1.42 1.42L3 16.25V21h4.75l8.92-8.92 1.42 1.42 1.41-1.41-1.92-1.92 3.13-3.12c.39-.39.39-1.02 0-1.42zM6.92 19L5 17.08l8.06-8.06 1.92 1.92L6.92 19z"/>
+            </symbol>
+
+            <!-- Color Palette Icon -->
+            <symbol id="icon-palette" viewBox="0 0 24 24">
+                <path d="M12 3c-4.97 0-9 4.03-9 9s4.03 9 9 9c.83 0 1.5-.67 1.5-1.5 0-.39-.15-.74-.39-1.01-.23-.26-.38-.61-.38-.99 0-.83.67-1.5 1.5-1.5H16c2.76 0 5-2.24 5-5 0-4.42-4.03-8-9-8zm-5.5 9c-.83 0-1.5-.67-1.5-1.5S5.67 9 6.5 9 8 9.67 8 10.5 7.33 12 6.5 12zm3-4C8.67 8 8 7.33 8 6.5S8.67 5 9.5 5s1.5.67 1.5 1.5S10.33 8 9.5 8zm5 0c-.83 0-1.5-.67-1.5-1.5S13.67 5 14.5 5s1.5.67 1.5 1.5S15.33 8 14.5 8zm3 4c-.83 0-1.5-.67-1.5-1.5S16.67 9 17.5 9s1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/>
+            </symbol>
+
+            <!-- Menu/More Icon -->
+            <symbol id="icon-menu" viewBox="0 0 24 24">
+                <path d="M12 8c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm0 2c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zm0 6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </symbol>
+
+            <!-- Close Icon -->
+            <symbol id="icon-close" viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+            </symbol>
+
+            <!-- Users/People Icon -->
+            <symbol id="icon-users" viewBox="0 0 24 24">
+                <path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+            </symbol>
+        </defs>
+    </svg>
+
+    <div class="container">
+        <div class="header">
+            <h1>Collaborative Drawing Canvas</h1>
+            <div class="connection-status" id="connectionStatus">Connecting...</div>
+        </div>
+
+        <div class="main-content">
+            <div class="toolbar">
+                <div class="tool-section">
+                    <h3>Drawing</h3>
+                    <div class="tool-grid">
+                        <button id="brushTool" class="tool-btn icon-btn active" data-tooltip="Brush (B)">
+                            <svg class="tool-icon"><use href="#icon-brush"/></svg>
+                        </button>
+                        <button id="eraserTool" class="tool-btn icon-btn" data-tooltip="Eraser (E)">
+                            <svg class="tool-icon"><use href="#icon-eraser"/></svg>
+                        </button>
+                        <button id="clearBtn" class="tool-btn icon-btn danger" data-tooltip="Clear Canvas (C)">
+                            <svg class="tool-icon"><use href="#icon-trash"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Colors</h3>
+                    <div class="color-display">
+                        <div class="current-color" id="currentColor" style="background: #000000;"></div>
+                        <div class="color-info">
+                            <div class="color-name" id="colorName">Black</div>
+                            <div class="color-hex" id="colorHex">#000000</div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs for color picker modes -->
+                    <div class="color-tabs">
+                        <button class="color-tab active" data-tab="quick">Quick</button>
+                        <button class="color-tab" data-tab="advanced">Advanced</button>
+                        <button class="color-tab" data-tab="history">History</button>
+                    </div>
+
+                    <!-- Quick Color Palette -->
+                    <div class="color-tab-content active" id="quick-tab">
+                        <div class="color-palette">
+                            <button class="color-btn" data-color="#000000" style="background: #000000;" title="Black"></button>
+                            <button class="color-btn" data-color="#FF0000" style="background: #FF0000;" title="Red"></button>
+                            <button class="color-btn" data-color="#00FF00" style="background: #00FF00;" title="Green"></button>
+                            <button class="color-btn" data-color="#0000FF" style="background: #0000FF;" title="Blue"></button>
+                            <button class="color-btn" data-color="#FFFF00" style="background: #FFFF00;" title="Yellow"></button>
+                            <button class="color-btn" data-color="#FF00FF" style="background: #FF00FF;" title="Magenta"></button>
+                            <button class="color-btn" data-color="#00FFFF" style="background: #00FFFF;" title="Cyan"></button>
+                            <button class="color-btn" data-color="#FFFFFF" style="background: #FFFFFF; border: 2px solid #ccc;" title="White"></button>
+                        </div>
+                        <div class="preset-palettes">
+                            <button class="preset-btn" data-preset="pastel">🌸 Pastel</button>
+                            <button class="preset-btn" data-preset="vibrant">⚡ Vibrant</button>
+                            <button class="preset-btn" data-preset="earth">🌍 Earth</button>
+                        </div>
+                    </div>
+
+                    <!-- Advanced Color Picker -->
+                    <div class="color-tab-content" id="advanced-tab">
+                        <div class="color-wheel-container">
+                            <canvas id="colorWheel" width="150" height="150"></canvas>
+                        </div>
+
+                        <div class="color-sliders">
+                            <div class="slider-group">
+                                <label>H: <span id="hValue">0</span>°</label>
+                                <input type="range" id="hueSlider" min="0" max="360" value="0" class="color-slider">
+                            </div>
+                            <div class="slider-group">
+                                <label>S: <span id="sValue">100</span>%</label>
+                                <input type="range" id="saturationSlider" min="0" max="100" value="100" class="color-slider">
+                            </div>
+                            <div class="slider-group">
+                                <label>L: <span id="lValue">0</span>%</label>
+                                <input type="range" id="lightnessSlider" min="0" max="100" value="0" class="color-slider">
+                            </div>
+                            <div class="slider-group">
+                                <label>A: <span id="alphaValue">100</span>%</label>
+                                <input type="range" id="alphaSlider" min="0" max="100" value="100" class="color-slider">
+                            </div>
+                        </div>
+
+                        <div class="hex-input-group">
+                            <label>Hex:</label>
+                            <input type="text" id="hexInput" value="#000000" maxlength="7" placeholder="#000000">
+                        </div>
+
+                        <button id="eyedropperBtn" class="tool-btn icon-btn eyedropper" data-tooltip="Pick Color from Canvas">
+                            <svg class="tool-icon"><use href="#icon-eyedropper"/></svg>
+                        </button>
+                    </div>
+
+                    <!-- Color History -->
+                    <div class="color-tab-content" id="history-tab">
+                        <div id="colorHistory" class="color-history">
+                            <p class="empty-state">No color history yet</p>
+                        </div>
+                        <button id="clearHistoryBtn" class="tool-btn small">Clear History</button>
+                    </div>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Stroke Width</h3>
+                    <input type="range" id="strokeWidth" min="1" max="50" value="3" class="slider">
+                    <span id="strokeWidthValue">3px</span>
+                </div>
+
+                <div class="tool-section">
+                    <h3>Actions</h3>
+                    <div class="tool-grid">
+                        <button id="undoBtn" class="tool-btn icon-btn" data-tooltip="Undo (Ctrl+Z)">
+                            <svg class="tool-icon"><use href="#icon-undo"/></svg>
+                        </button>
+                        <button id="redoBtn" class="tool-btn icon-btn" data-tooltip="Redo (Ctrl+Shift+Z)">
+                            <svg class="tool-icon"><use href="#icon-redo"/></svg>
+                        </button>
+                        <button id="downloadBtn" class="tool-btn icon-btn" data-tooltip="Download PNG">
+                            <svg class="tool-icon"><use href="#icon-download"/></svg>
+                        </button>
+                        <button id="copyBtn" class="tool-btn icon-btn" data-tooltip="Copy to Clipboard">
+                            <svg class="tool-icon"><use href="#icon-copy"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="canvas-container">
+                <canvas id="drawingCanvas"></canvas>
+                <div id="cursorsContainer" class="cursors-container"></div>
+            </div>
+
+            <div class="users-panel">
+                <h3>Online Users</h3>
+                <div id="usersList" class="users-list"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <div id="stats" class="stats">
+                <span>FPS: <span id="fps">0</span></span>
+                <span>Latency: <span id="latency">0</span>ms</span>
+                <span>Canvas Size: <span id="canvasSize">0x0</span></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Bottom Toolbar -->
+    <div class="mobile-toolbar">
+        <button class="mobile-tool-btn" data-tool="brush" data-tooltip="Brush">
+            <svg class="tool-icon"><use href="#icon-brush"/></svg>
+        </button>
+        <button class="mobile-tool-btn" data-tool="eraser" data-tooltip="Eraser">
+            <svg class="tool-icon"><use href="#icon-eraser"/></svg>
+        </button>
+        <button class="mobile-tool-btn" data-tool="color" data-tooltip="Colors">
+            <svg class="tool-icon"><use href="#icon-palette"/></svg>
+        </button>
+        <button class="mobile-tool-btn" data-tool="undo" data-tooltip="Undo">
+            <svg class="tool-icon"><use href="#icon-undo"/></svg>
+        </button>
+        <button class="mobile-tool-btn" data-tool="redo" data-tooltip="Redo">
+            <svg class="tool-icon"><use href="#icon-redo"/></svg>
+        </button>
+        <button class="mobile-tool-btn" data-tool="clear" data-tooltip="Clear">
+            <svg class="tool-icon"><use href="#icon-trash"/></svg>
+        </button>
+        <button class="mobile-more-btn" data-tooltip="More">
+            <svg class="tool-icon"><use href="#icon-menu"/></svg>
+        </button>
+    </div>
+
+    <!-- Mobile Color Picker Modal -->
+    <div class="color-picker-modal" id="mobileColorModal">
+        <div class="modal-backdrop"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Choose Color</h3>
+                <button class="modal-close-btn" data-tooltip="Close">
+                    <svg class="tool-icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="modal-body" id="modalColorPicker">
+                <!-- Color picker content will be cloned here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Users Panel Overlay -->
+    <div class="users-overlay" id="usersOverlay">
+        <div class="overlay-backdrop"></div>
+        <div class="overlay-panel">
+            <div class="overlay-header">
+                <h3>Online Users</h3>
+                <button class="overlay-close-btn" data-tooltip="Close">
+                    <svg class="tool-icon"><use href="#icon-close"/></svg>
+                </button>
+            </div>
+            <div class="overlay-body" id="overlayUsersList">
+                <!-- Users list will be cloned here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="websocket.js"></script>
+    <script src="canvas.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
