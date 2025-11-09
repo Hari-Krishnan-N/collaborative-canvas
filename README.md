@@ -4,9 +4,9 @@ A real-time collaborative drawing application where multiple users can draw simu
 
 ## 🎨 Live Demo
 
-**🌐 [View Live Demo](collaborative-canvas-production-6f7d.up.railway.app)** ← *Deploy link will be added here*
+**🌐 [View Live Demo](https://collaborative-canvas-production-6f7d.up.railway.app)** ← *Works immediately, no setup required. 
 
-*Works immediately, no setup required. Open in multiple tabs to test collaboration!*
+Open in multiple tabs to test collaboration!*
 
 ## ⚡ Quick Start
 
